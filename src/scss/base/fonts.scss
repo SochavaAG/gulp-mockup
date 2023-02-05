@@ -1,0 +1,12 @@
+// add mixins
+@import '../base/mixins';
+
+// add variables
+@import '../base/common';
+
+@include font(#{$fontFamily}, #{$fontFamily}-Bold, bold);
+@include font(#{$fontFamily}, #{$fontFamily}-Medium, 500);
+@include font(#{$fontFamily}, #{$fontFamily}-Regular);
+@include font(#{$fontFamily}, #{$fontFamily}-SemiBold, 600);
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;500;600;700&display=swap');

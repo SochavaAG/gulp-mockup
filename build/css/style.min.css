@@ -1,0 +1,168 @@
+article, aside, audio, b, canvas, dd, details, div, dl, dt, em, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, label, li, mark, menu, nav, ol, p, section, span, strong, summary, table, tbody, tfoot, thead, time, tr, u, ul, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+  background: 0 0;
+  font-size: 100%
+}
+body {
+  padding: 0;
+  vertical-align: baseline;
+  line-height: 1.2;
+  font-family: Poppins, Arial, Verdana, Helvetica, sans-serif;
+  font-size: 15px;
+  -webkit-text-size-adjust: 100%
+}
+img, td, th {
+  padding: 0;
+  font-size: 100%;
+  vertical-align: middle
+}
+a, body, img, sub, sup, td, th {
+  outline: 0;
+  background: 0 0
+}
+body, img, sub, sup, td, th {
+  margin: 0;
+  border: 0
+}
+sub, sup {
+  vertical-align: sub;
+  font-size: smaller
+}
+a {
+  font-size: 100%;
+  vertical-align: baseline;
+  text-decoration: none
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0
+}
+button, input, select, textarea {
+  margin: 0;
+  font-size: 100%
+}
+a, input, sub, sup, textarea {
+  padding: 0
+}
+input[type=checkbox] {
+  vertical-align: bottom
+}
+input[type=radio] {
+  vertical-align: text-bottom
+}
+sup {
+  vertical-align: super
+}
+.clearfix, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block
+}
+nav ul {
+  list-style: none
+}
+a, blockquote {
+  margin: 0
+}
+button {
+  cursor: pointer
+}
+li {
+  list-style: none outside none
+}
+a:hover {
+  text-decoration: underline
+}
+html {
+  overflow-y: scroll
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden
+}
+* html .clearfix {
+  height: 1%
+}
+@import url(https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;500;600;700&display=swap);
+@font-face {
+  font-family: Poppins;
+  src: url(../fonts/Poppins-Bold/Poppins-Bold.eot);
+  src: url(../fonts/Poppins-Bold/Poppins-Bold.eot?#iefix) format("embedded-opentype"), url(../fonts/Poppins-Bold/Poppins-Bold.woff2) format("woff2"), url(../fonts/Poppins-Bold/Poppins-Bold.woff) format("woff"), url(../fonts/Poppins-Bold/Poppins-Bold.ttf) format("truetype"), url(../fonts/Poppins-Bold/Poppins-Bold.svg#Poppins-Bold) format("svg");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap
+}
+@font-face {
+  font-family: Poppins;
+  src: url(../fonts/Poppins-Medium/Poppins-Medium.eot);
+  src: url(../fonts/Poppins-Medium/Poppins-Medium.eot?#iefix) format("embedded-opentype"), url(../fonts/Poppins-Medium/Poppins-Medium.woff2) format("woff2"), url(../fonts/Poppins-Medium/Poppins-Medium.woff) format("woff"), url(../fonts/Poppins-Medium/Poppins-Medium.ttf) format("truetype"), url(../fonts/Poppins-Medium/Poppins-Medium.svg#Poppins-Medium) format("svg");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap
+}
+@font-face {
+  font-family: Poppins;
+  src: url(../fonts/Poppins-Regular/Poppins-Regular.eot);
+  src: url(../fonts/Poppins-Regular/Poppins-Regular.eot?#iefix) format("embedded-opentype"), url(../fonts/Poppins-Regular/Poppins-Regular.woff2) format("woff2"), url(../fonts/Poppins-Regular/Poppins-Regular.woff) format("woff"), url(../fonts/Poppins-Regular/Poppins-Regular.ttf) format("truetype"), url(../fonts/Poppins-Regular/Poppins-Regular.svg#Poppins-Regular) format("svg");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap
+}
+@font-face {
+  font-family: Poppins;
+  src: url(../fonts/Poppins-SemiBold/Poppins-SemiBold.eot);
+  src: url(../fonts/Poppins-SemiBold/Poppins-SemiBold.eot?#iefix) format("embedded-opentype"), url(../fonts/Poppins-SemiBold/Poppins-SemiBold.woff2) format("woff2"), url(../fonts/Poppins-SemiBold/Poppins-SemiBold.woff) format("woff"), url(../fonts/Poppins-SemiBold/Poppins-SemiBold.ttf) format("truetype"), url(../fonts/Poppins-SemiBold/Poppins-SemiBold.svg#Poppins-SemiBold) format("svg");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap
+}
+button, input, textarea {
+  font-family: Poppins, sans-serif;
+  font-size: inherit
+}
+*::-webkit-input-placeholder {
+  color: #5a5858
+}
+*::-moz-placeholder {
+  color: #5a5858
+}
+*:-ms-input-placeholder {
+  color: #5a5858
+}
+body {
+  font-family: Poppins, sans-serif;
+  font-size: 14px;
+  color: #000
+}
+.ag-format-container {
+  width: 1181px;
+  margin: 0 auto
+}
+.ag-footer, .ag-header, .ag-menu, .ag-primary {
+  padding: 15px 0
+}
+@media only screen and (max-width: 767px) {
+  .ag-format-container {
+    width: 90%
+  }
+}
+@media only screen and (max-width: 639px) {
+  .ag-format-container {
+    width: 86%
+  }
+}
+@media (min-width: 768px) and (max-width: 980px) {
+  .ag-format-container {
+    width: 748px
+  }
+}
+@media (min-width: 979px) and (max-width: 1180px) {
+  .ag-format-container {
+    width: 960px
+  }
+}

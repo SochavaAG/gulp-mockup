@@ -1,0 +1,1 @@
+!function(a){a(function(){function n(){var n=[["$19","$54","$89"],["$12","$36","$56"]];a("#ag-month").is(":checked")?t(n[0]):a("#ag-year").is(":checked")&&t(n[1])}function t(n){for(var t=0;t<n.length;t++)a(".js-plan-item_sum:eq("+t+")").text(n[t]).addClass("js-ag-plan-item_sum")}a(".ag-switch_input").on("change",function(){n()}),n()})}(jQuery);
