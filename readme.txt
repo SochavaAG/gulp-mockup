@@ -1,5 +1,5 @@
 Создаю проект с нуля:
-Берем донора jadwalin и выполняем пункты:
+Берем донора gulp-mockup и выполняем пункты:
 
 Создаю папку temp в корневой папке GULP-projects:
 mkdir temp
@@ -7,22 +7,28 @@ mkdir temp
 Перехожу в папку temp:
 cd temp
 
-Клонируем c https://github.com/SochavaAG проект jadwalin:
+Клонируем c https://github.com/SochavaAG проект gulp-mockup:
 Запускаю в корневой папке GULP-projects команду в тернинале:
-git clone https://github.com/SochavaAG/jadwalin.git
+git clone https://github.com/SochavaAG/gulp-mockup.git
 
 Затем удаляем все что связано с гитом:
 .git
 .gitignore
 
-Переименовываем папку jadwalin в новое название проекта xxxbabes4u
+Переименовываем папку gulp-mockup в новое название проекта newproject
 
-И перемещаю папку xxxbabes4u в орневую папку GULP-projects:
+И перемещаю папку newproject в корневую папку GULP-projects:
 
-Перехожу в скачанную с github папку xxxbabes4u и открываю терминад:
+Перехожу в скачанную с github папку newproject и открываю терминал:
 
 Устанавливаю локально Gulp для проекта xxxbabes4u и нужные пакеты (можно посмотреть в файле gulpfile.js):
 npm i -D gulp browser-sync gulp-plumber gulp-sass sass gulp-csso gulp-file-include gulp-htmlmin gulp-uglify gulp-concat gulp-autoprefixer gulp-rimraf
+
+npm i -D gulp-cache imagemin-jpeg-recompress imagemin-pngquant gulp-webp gulp-filesize gulp-imagemin@7.1.0 gulp-svg-sprite
+
+npm i -D gulp-rename
+
+npm i -D gulp-ttf2woff gulp-ttf2woff2
 
 Запускаю проект jadwalin для простоянного слежения:
 gulp serve
