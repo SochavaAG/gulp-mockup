@@ -16,6 +16,9 @@ npm i -D gulp-rename
 
 npm i -D gulp-ttf2woff gulp-ttf2woff2
 
+npm i -D gulp-svgmin gulp-cheerio gulp-replace
+
+
 
 Запускаю проект newproject для простоянного слежения:
 gulp serve

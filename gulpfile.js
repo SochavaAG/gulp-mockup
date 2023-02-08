@@ -21,6 +21,10 @@ const {src, dest, watch, series} = require('gulp'), // подключаем Gulp
   pngquant = require('imagemin-pngquant'), // модуль для сжатия png
 
   svgSprite = require('gulp-svg-sprite'), // модуль для сборки SVG спарайта
+  svgmin = require('gulp-svgmin'), // модуль для сжатия SVG
+  cheerio = require('gulp-cheerio'), // модуль для удаление лишних атрибутов из SVG
+  replace = require('gulp-replace'), // модуль для замены
+
 
   ttf2woff = require('gulp-ttf2woff'), // модуль для конвертирования шрифта с формата *.ttf в *.woff
   ttf2woff2 = require('gulp-ttf2woff2'), // модуль для конвертирования шрифта с формата *.ttf в *.woff2
@@ -28,6 +32,7 @@ const {src, dest, watch, series} = require('gulp'), // подключаем Gulp
   concat = require('gulp-concat'), // модуль для конкатенация (объединение) файлов
   rimraf = require('gulp-rimraf'), // модуль для удаления файлов и каталогов
   rename = require('gulp-rename'), // модуль для переименования файла
+
   sync = require('browser-sync').create(); // сервер для работы и автоматического обновления страниц
 
 
@@ -41,6 +46,7 @@ const paths = {
     fonts: 'build/fonts/'
   },
   src: {
+    root: 'src/',
     html: 'src/**.html',
     js: 'src/js/**.js',
     css: 'src/scss/*.scss',
@@ -101,6 +107,7 @@ function scripts() {
 // обработка картинок
 function images() {
   return src(paths.src.img + '**/*.+(png|jpg|jpeg|gif|ico)') // путь с исходниками картинок
+    .pipe(plumber())
     .pipe(cache(imagemin([ // сжатие изображений
       imagemin.gifsicle({ interlaced: true }),
       jpegrecompress({
@@ -122,26 +129,47 @@ function images() {
      })
      )
      */
-    .pipe(dest(paths.build.img)) // путь к картинкам *.png|jpg|jpeg|gif|ico
+    .pipe(dest(paths.build.img)) // path to pictures *.png|jpg|jpeg|gif|ico
     .pipe(size());
 }
 
 function webpImg() {
   return src(paths.src.img + '**/*.+(png|jpg|jpeg|webp)') // путь с исходниками картинок
+    .pipe(plumber())
     .pipe(
       webp({
         quality: 75,
         method: 6
       })
     )
-    .pipe(dest(paths.build.img + 'webp/')) // путь к картинкам *.webp
+    .pipe(dest(paths.build.img + 'webp/')) // path to pictures *.webp
     .pipe(size());
 }
 
 
 function spriteSVG(){
   return src(paths.src.img + 'svg/icons/**/*.svg')
-    .pipe(svgSprite({
+    .pipe(plumber())
+    // minify svg
+    .pipe(svgmin({
+      js2svg: {
+        pretty: true
+      }
+    }))
+    // remove all fill and style declarations in out shapes
+    .pipe(cheerio({
+      run: function ($) {
+        $('[fill]').removeAttr('fill');
+        $('[stroke]').removeAttr('stroke');
+        $('[style]').removeAttr('style');
+      },
+      parserOptions: {xmlMode: true}
+    }))
+    // cheerio plugin create unnecessary string '&gt;', so replace it.
+    .pipe(replace('&gt;', '>'))
+    // build SVG sprite
+    /*
+      .pipe(svgSprite({
         mode: {
           stack: {
             sprite: '../svg/sprite/sprite.svg',
@@ -150,31 +178,47 @@ function spriteSVG(){
         }
       }
     ))
-    .pipe(dest(paths.build.img)); // путь к картинкам *.svg
+    */
+
+    .pipe(svgSprite({
+      mode: {
+        symbol: {
+          sprite: '../svg/sprite/sprite.svg',
+          example: true,
+          svg: {
+            xmlDeclaration: false,
+            doctypeDeclaration: false
+          },
+          render: {
+            scss: {
+              dest:'scss/_sprite-svg.scss',
+              template: paths.src.root + 'scss/templates/_sprite-template-svg.scss'
+            }
+          }
+        }
+      }
+    }))
+
+    .pipe(dest(paths.build.img)); // path to pictures *.svg
 }
 
-
-// перенос шрифтов
-/*
-function fonts() {
-  return src(paths.src.fonts)
-    .pipe(dest(paths.build.fonts));
-}
-*/
 
 function fonts() {
   return src(paths.src.fonts + '**/*.+(eot|svg|ttf|otf|woff|woff2)')
+    .pipe(plumber())
     .pipe(dest(paths.build.fonts));
 }
 
 function fontWoff() {
   return src(paths.src.fonts + '**/*.+(eot|svg|ttf|otf|woff|woff2)')
+    .pipe(plumber())
     .pipe(ttf2woff())
     .pipe(dest(paths.build.fonts));
 }
 
 function fontWoff2() {
   return src(paths.src.fonts + '**/*.+(eot|svg|ttf|otf|woff|woff2)')
+    .pipe(plumber())
     .pipe(ttf2woff2())
     .pipe(dest(paths.build.fonts));
 }
