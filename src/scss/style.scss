@@ -1,11 +1,11 @@
 // add mixins
-@import 'base/mixins';
+@import 'base/_mixins';
 
 // add variables
-@import 'base/common';
+@import 'base/_vars';
 
 // add fonts
-@import 'base/fonts';
+@import 'base/_fonts';
 
 
 input,
@@ -22,7 +22,9 @@ textarea {
 }
 
 body {
-  font-family: $fontFamily, sans-serif;
+  line-height: 1.2;
+
+  font-family: $fontFamily, Arial, Verdana, Helvetica, sans-serif;
   font-size: $fontSize;
   color: $color;
 }
@@ -42,13 +44,13 @@ a {
 }
 
 // add blocks
-@import 'common/header';
+@import '../components/common/header/header';
 
-@import 'common/menu';
+@import '../components/common/menu/menu';
 
-@import 'page-blocks/about/main';
+@import '../components/page-blocks/main-components';
 
-@import 'common/footer';
+@import '../components/common/footer/footer';
 // /add blocks
 
 

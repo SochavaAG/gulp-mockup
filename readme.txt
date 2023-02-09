@@ -32,6 +32,9 @@ npm i -D gulp-ttf2woff gulp-ttf2woff2
 
 npm i -D gulp-svgmin gulp-cheerio gulp-replace
 
+npm i -D gulp-favicons
+
+npm i -D gulp-sourcemaps
 
 Запускаю проект jadwalin для простоянного слежения:
 gulp serve
