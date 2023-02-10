@@ -3,7 +3,8 @@ const {src, dest, watch, series} = require('gulp'), // подключаем Gulp
   sourceMaps  = require('gulp-sourcemaps'), // модуль для указания в каком файле задано определенное правило или функция
 
   sass = require('gulp-sass')(require('sass')), // модуль для компиляции SASS (SCSS) в CSS
-  csso = require('gulp-csso'), // плагин для минимизации CSS
+  csso = require('gulp-csso'), // модуль для минимизации CSS
+  mediaGroup = require('gulp-group-css-media-queries'), // модуль для группировки медиа запросов
   autoprefixer = require('gulp-autoprefixer'), // модуль для автоматической установки автопрефиксов
 
   include = require('gulp-file-include'), // модуль для подключение компонентов
@@ -11,8 +12,6 @@ const {src, dest, watch, series} = require('gulp'), // подключаем Gulp
   htmlmin = require('gulp-htmlmin'), // модуль для минимизации HTML
 
   uglify = require('gulp-uglify'), // модуль для минимизации JavaScript
-
-  cache = require('gulp-cache'), // модуль для кэширования
 
   webp = require('gulp-webp'), // модуль для пережатие картинок в webp
   size = require('gulp-filesize'), // модуль выводит в консоль размер файлов до и после их сжатия, чем создаёт чувство глубокого морального удовлетворения, особенно при минификации картинок
@@ -35,11 +34,11 @@ const {src, dest, watch, series} = require('gulp'), // подключаем Gulp
   rimraf = require('gulp-rimraf'), // модуль для удаления файлов и каталогов
   rename = require('gulp-rename'), // модуль для переименования файла
 
-  sync = require('browser-sync').create(); // сервер для работы и автоматического обновления страниц
+  browserSync = require('browser-sync').create(); // сервер для работы и автоматического обновления страниц
 
 //const config = require('../package.json');
 
-/* пути к исходным файлам (src), к готовым файлам (build), а также к тем, за изменениями которых нужно наблюдать (watch) */
+/* пути к исходным файлам (app), к готовым файлам (build), а также к тем, за изменениями которых нужно наблюдать (watch) */
 const paths = {
   build: {
     html: 'build/',
@@ -48,27 +47,27 @@ const paths = {
     img: 'build/images/',
     fonts: 'build/fonts/'
   },
-  src: {
-    root: 'src/',
-    html: 'src/**.html',
-    js: 'src/js/**.js',
-    css: 'src/scss/*.scss',
-    img: 'src/images/',
-    fonts: 'src/fonts/'
+  app: {
+    root: 'app/',
+    html: 'app/**.html',
+    js: 'app/js/**.js',
+    css: 'app/scss/*.scss',
+    img: 'app/images/',
+    fonts: 'app/fonts/'
   },
   watch: {
-    html: 'src/**/*.html',
-    js: 'src/js/**/*.js',
-    css: 'src/scss/*.scss',
-    img: 'src/images/**/*.*',
-    fonts: 'srs/fonts/**/*.*'
+    html: 'app/**/*.html',
+    js: 'app/js/**/*.js',
+    css: 'app/**/*.scss',
+    img: 'app/images/**/*.*',
+    fonts: 'app/fonts/**/*.*'
   },
   root: './build'
 };
 
 // обработка шаблонов
 function templates() {
-  return src(paths.src.html)
+  return src(paths.app.html)
     .pipe(plumber())
     .pipe(include({
       prefix: '@@'
@@ -81,22 +80,26 @@ function templates() {
 
 // обработка стилей
 function styles () {
-  return src(paths.src.css)
+  return src(paths.app.css)
     .pipe(sourceMaps.init())
     .pipe(plumber())
     .pipe(sass())
+    .pipe(mediaGroup())
     .pipe(autoprefixer({
-      overrideBrowserslist: ['last 8 versions']
+      //grid: true,
+      overrideBrowserslist: ['last 5 versions'],
+      //cascade: true
     }))
     .pipe(csso())
     .pipe(concat('style.min.css'))
     .pipe(sourceMaps.write())
-    .pipe(dest(paths.build.css));
+    .pipe(dest(paths.build.css))
+    .pipe(browserSync.stream());
 }
 
 // обработка картинок JS
 function scripts() {
-  return src(paths.src.js)
+  return src(paths.app.js)
     .pipe(plumber())
     .pipe(uglify({
       mangle: true,
@@ -106,40 +109,30 @@ function scripts() {
       }
     }))
     .pipe(rename({ suffix: '.min' }))
-    .pipe(dest(paths.build.js));
+    .pipe(dest(paths.build.js))
+    .pipe(browserSync.stream());
 }
 
 // обработка картинок
 function images() {
-  return src(paths.src.img + '**/*.+(png|jpg|jpeg|gif|ico)') // путь с исходниками картинок
+  return src(paths.app.img + '**/*.+(png|jpg|jpeg|gif|ico)') // путь с исходниками картинок
     .pipe(plumber())
-    .pipe(cache(imagemin([ // сжатие изображений
-      imagemin.gifsicle({ interlaced: true }),
-      jpegrecompress({
-        progressive: true,
-        max: 90,
-        min: 80
-      }),
-      pngquant(),
-      imagemin.svgo({ plugins: [{ removeViewBox: false }] })
-    ])))
-
-    /* второй вариант кода для сжатия
-     .pipe(
-     imagemin({
-     progressive: true,
-     svgoPlugins: [{ removeViewBox: false }],
-     interlaced: true,
-     optimizationLevel: 3
-     })
-     )
-     */
+    .pipe(
+      imagemin([
+        imagemin.gifsicle({ interlaced: true }),
+        imagemin.mozjpeg({ quality: 80, progressive: true }), // перестал выдавать ошибку и с ним сжимает больше
+        jpegrecompress({ progressive: true, max: 90, min: 80}),
+        imagemin.optipng({ optimizationLevel: 5 }),
+        imagemin.svgo({ plugins: [{ removeViewBox: false }] })
+      ])
+    )
     .pipe(dest(paths.build.img)) // path to pictures *.png|jpg|jpeg|gif|ico
+    .pipe(browserSync.stream())
     .pipe(size());
 }
 
 function webpImg() {
-  return src(paths.src.img + '**/*.+(png|jpg|jpeg|webp)') // путь с исходниками картинок
+  return src(paths.app.img + '**/*.+(png|jpg|jpeg|webp)') // путь с исходниками картинок
     .pipe(plumber())
     .pipe(
       webp({
@@ -148,11 +141,12 @@ function webpImg() {
       })
     )
     .pipe(dest(paths.build.img + 'webp/')) // path to pictures *.webp
+    .pipe(browserSync.stream())
     .pipe(size());
 }
 
 function spriteSVG(){
-  return src(paths.src.img + 'svg/icons/**/*.svg')
+  return src(paths.app.img + 'svg/icons/**/*.svg')
     .pipe(plumber())
     // minify svg
     .pipe(svgmin({
@@ -171,32 +165,19 @@ function spriteSVG(){
     }))
     // cheerio plugin create unnecessary string '&gt;', so replace it.
     .pipe(replace('&gt;', '>'))
-    // build SVG sprite
-    /*
-      .pipe(svgSprite({
-        mode: {
-          stack: {
-            sprite: '../svg/sprite/sprite.svg',
-            example: true
-          }
-        }
-      }
-    ))
-    */
-
     .pipe(svgSprite({
       mode: {
         symbol: {
-          sprite: '../svg/sprite/sprite.svg',
-          example: true,
+          sprite: '../symbol/svg/sprite.svg',
+          example: true, // создает файл sprite.symbol.html с примером svg
           svg: {
             xmlDeclaration: false,
             doctypeDeclaration: false
           },
           render: {
             scss: {
-              dest:'scss/base/_sprite-svg.scss',
-              template: paths.src.root + 'scss/base/templates/_sprite-template-svg.scss'
+              dest:'svg/sprite-svg.scss',
+              template: paths.app.root + 'scss/base/templates/_sprite-template-svg.scss'
             }
           }
         }
@@ -207,7 +188,7 @@ function spriteSVG(){
 }
 
 function faviconsImg(){
-  return src(paths.src.img + 'favicons/favicon-sm.png')
+  return src(paths.app.img + 'favicons/favicon-sm.png')
     .pipe(plumber())
     .pipe(favicons({
       html: 'favicons.html',
@@ -230,7 +211,7 @@ function faviconsImg(){
 }
 
 function faviconsImgBig(){
-  return src(paths.src.img + 'favicons/favicon-lg.png')
+  return src(paths.app.img + 'favicons/favicon-lg.png')
     .pipe(plumber())
     .pipe(favicons({
       //appName: config.name,
@@ -259,23 +240,14 @@ function faviconsImgBig(){
 }
 
 function fonts() {
-  return src(paths.src.fonts + '**/*.+(eot|svg|ttf|otf|woff|woff2)')
-    .pipe(plumber())
-    .pipe(dest(paths.build.fonts));
-}
-
-function fontWoff() {
-  return src(paths.src.fonts + '**/*.+(eot|svg|ttf|otf|woff|woff2)')
+  src(paths.app.fonts + '**/*.+(eot|svg|ttf|otf|woff2)')
     .pipe(plumber())
     .pipe(ttf2woff())
     .pipe(dest(paths.build.fonts));
-}
-
-function fontWoff2() {
-  return src(paths.src.fonts + '**/*.+(eot|svg|ttf|otf|woff|woff2)')
-    .pipe(plumber())
+  return src(paths.app.fonts + '**/*.+(eot|svg|ttf|otf|woff)')
     .pipe(ttf2woff2())
-    .pipe(dest(paths.build.fonts));
+    .pipe(dest(paths.build.fonts))
+    .pipe(browserSync.stream());
 }
 
 // удаление каталога build
@@ -285,23 +257,21 @@ function clear() {
     .pipe(rimraf());
 }
 
-// очистка кэша
-function cacheclear() {
- return cache.clearAll();
-}
-
 function serve() {
-  sync.init({
+  browserSync.init({
     server: paths.root
   });
 
-  watch(paths.watch.html, series(templates)).on('change', sync.reload);
-  watch(paths.watch.css, series(styles)).on('change', sync.reload);
-  watch(paths.watch.js, series(scripts)).on('change', sync.reload);
-  //watch(paths.watch.fonts, series(fontWoff, fontWoff2)).on('change', sync.reload);
-  watch(paths.watch.img, series(images, webpImg)).on('change', sync.reload);
+  watch(paths.watch.html, series(templates));
+  watch(paths.watch.css, series(styles));
+  watch(paths.watch.js, series(scripts));
+  watch(paths.watch.fonts, series(fonts));
+  watch(paths.watch.img, series(images, webpImg)).on('change', browserSync.reload);
 }
 
 
-exports.build = series(clear, cacheclear, styles, templates, scripts, images, webpImg, spriteSVG, faviconsImg, faviconsImgBig, fonts, fontWoff, fontWoff2);
-exports.serve = series(clear, cacheclear, styles, templates, scripts, images, webpImg, serve);
+exports.clear = series(clear); // задача для удаления папки build // gulp clear
+exports.svg = series(clear, spriteSVG); // задача для генерации SVG sprite // gulp svg
+exports.favicon = series(clear, series(faviconsImg, faviconsImgBig)); // задача для генерации favicon // gulp favicon
+exports.build = series(clear, styles, templates, scripts, images, webpImg, fonts, faviconsImg, faviconsImgBig); // Задача для единоразовой сборки проекта // gulp build
+exports.serve = series(clear, styles, templates, scripts, images, webpImg, fonts, faviconsImg, faviconsImgBig, serve); // Задача с постоянным слежением за изменениями в проекте // gulp serve
