@@ -1,15 +1,10 @@
 Создаю проект с нуля:
 Берем донора gulp-mockup и выполняем пункты:
 
-Создаю папку temp в корневой папке GULP-projects:
-mkdir temp
-
-Перехожу в папку temp:
-cd temp
-
 Клонируем c https://github.com/SochavaAG проект gulp-mockup:
 Запускаю в корневой папке GULP-projects команду в тернинале:
-git clone https://github.com/SochavaAG/gulp-mockup.git
+git clone https://github.com/SochavaAG/gulp-mockup.git newproject
+где newproject имя нового проекта
 
 Затем удаляем все что связано с гитом:
 .git

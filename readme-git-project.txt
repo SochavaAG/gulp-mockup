@@ -2,7 +2,9 @@
 
 Клонируем c https://github.com/SochavaAG проект gulp-mockup:
 Запускаю в корневой папке GULP-projects команду в тернинале:
-git clone https://github.com/SochavaAG/gulp-mockup.git
+git clone https://github.com/SochavaAG/gulp-mockup.git newproject
+где newproject имя нового проекта
+
 
 Перехожу в скачанную с github папку gulp-mockup:
 cd gulp-mockup
