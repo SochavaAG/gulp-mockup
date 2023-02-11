@@ -6,7 +6,7 @@
 <html lang="ru">
 <!--<![endif]-->
 @@include('pages/common/head/head.html', {
-'title': "Title Home",
+'title': 'Title Home',
 })
 
 <body>
@@ -16,13 +16,19 @@
 
   <div class="ag-format-container">
     <h1>Title Home Page</h1>
+
+    @@include('components/button/button.html', {
+      'textbtn': 'Join Now',
+      'urlbtn': '/en',
+      'css-class-btn': 'btn__ rer uyiyu'
+    })
   </div>
 
   @@include('pages/common/footer/footer.html')
 
   @@include('pages/common/svg/svg-sprite.html')
 
-  @@include('pages/common/scripts/scripts.html')
+  @@include('pages/common/style-script/style-script.html', {'footer': true})
 
 </div>
 </body>

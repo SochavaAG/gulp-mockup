@@ -4,6 +4,7 @@ const {src, dest, watch, series} = require('gulp'), // подключаем Gulp
 
   sass = require('gulp-sass')(require('sass')), // модуль для компиляции SASS (SCSS) в CSS
   csso = require('gulp-csso'), // модуль для минимизации CSS
+  classPrefix = require('gulp-class-prefix'), // модуль для добавление префиксов к классам CSS
   mediaGroup = require('gulp-group-css-media-queries'), // модуль для группировки медиа запросов
   autoprefixer = require('gulp-autoprefixer'), // модуль для автоматической установки автопрефиксов
 
@@ -34,6 +35,8 @@ const {src, dest, watch, series} = require('gulp'), // подключаем Gulp
   rimraf = require('gulp-rimraf'), // модуль для удаления файлов и каталогов
   rename = require('gulp-rename'), // модуль для переименования файла
 
+  zipFiles = require('gulp-zip'), // модуль для архивации файлов для прода
+
   browserSync = require('browser-sync').create(); // сервер для работы и автоматического обновления страниц
 
 //const config = require('../package.json');
@@ -45,7 +48,8 @@ const paths = {
     js: 'build/js/',
     css: 'build/css/',
     img: 'build/images/',
-    fonts: 'build/fonts/'
+    fonts: 'build/fonts/',
+    zip: 'zip'
   },
   app: {
     root: 'app/',
@@ -85,6 +89,7 @@ function styles () {
     .pipe(plumber())
     .pipe(sass())
     .pipe(mediaGroup())
+    .pipe(classPrefix('ag-', { ignored: [/\.ag-/, /\.js-ag-/] }))
     .pipe(autoprefixer({
       //grid: true,
       overrideBrowserslist: ['last 5 versions'],
@@ -250,6 +255,34 @@ function fonts() {
     .pipe(browserSync.stream());
 }
 
+function zip() {
+  const name = require('./package.json').name;
+
+  const now = new Date(),
+    year = now.getFullYear().toString().padStart(2, '0'),
+    month = (now.getMonth() + 1).toString().padStart(2, '0'),
+    day = now.getDate().toString().padStart(2, '0'),
+    hours = now.getHours().toString().padStart(2, '0'),
+    minutes = now.getMinutes().toString().padStart(2, '0');
+
+  nameZip = year + '-' + month + '-' + day + '_' + hours + ':' + minutes + '_' + name + '.zip';
+
+  return src([
+    './**',
+    '.gitignore',
+    '*.js',
+    '*.json',
+    '*.md',
+    '*.yml',
+    '!package-lock.json',
+    '!node_modules/**',
+    '!zip/**'
+  ])
+    .pipe(plumber())
+    .pipe(zipFiles(nameZip))
+    .pipe(dest('zip'));
+}
+
 // удаление каталога build
 function clear() {
   //return src(paths.root, {read: false})
@@ -271,6 +304,7 @@ function serve() {
 
 
 exports.clear = series(clear); // задача для удаления папки build // gulp clear
+exports.zip = series(zip); // задача для архивации файлов для прода // gulp zip
 exports.svg = series(clear, spriteSVG); // задача для генерации SVG sprite // gulp svg
 exports.favicon = series(clear, series(faviconsImg, faviconsImgBig)); // задача для генерации favicon // gulp favicon
 exports.build = series(clear, styles, templates, scripts, images, webpImg, fonts, faviconsImg, faviconsImgBig); // Задача для единоразовой сборки проекта // gulp build

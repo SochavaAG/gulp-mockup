@@ -22,6 +22,10 @@ npm i -D gulp-favicons
 
 npm i -D gulp-group-css-media-queries
 
+npm i -D gulp-zip
+
+npm i -D gulp-class-prefix
+
 Запускаю проект newproject для простоянного слежения:
 gulp serve
 

@@ -1,0 +1,37 @@
+@mixin btn($width: '270px', $height: '40px', $align: '0 auto', $bg: '#000', $weight: 'normal', $size: '20px', $color: '#FFF', $radius: true) {
+  height: $height;
+  line-height: $height;
+  min-width: $width;
+  margin: $align;
+  border: 1px solid $bg;
+  background-color: $bg;
+
+  text-align: center;
+  font-weight: $weight;
+  font-size: $size;
+  color: $color;
+
+  @if ($radius) {
+    border-radius: calc($height/2);
+  }
+
+  box-sizing: border-box;
+}
+
+@mixin btnHover($bg: '#000', $color: '#FFF') {
+  border: 1px solid $bg;
+  background-color: $bg;
+
+  text-decoration: none;
+  color: $color;
+}
+
+.base_btn {
+  display: table;
+  padding: 0 15px;
+
+  @include btn(#{$widthBtn}, #{$heightBtn}, #{$alignBtn}, #{$bgBtn}, #{$weightBtn}, #{$sizeBtn}, #{$colorBtn}, false);
+}
+.base_btn:hover {
+  @include btnHover(#{$bgBtnHover}, #{$colorBtnHover});
+}

@@ -38,6 +38,10 @@ npm i -D gulp-sourcemaps
 
 npm i -D gulp-group-css-media-queries
 
+npm i -D gulp-zip
+
+npm i -D gulp-class-prefix
+
 Запускаю проект jadwalin для простоянного слежения:
 gulp serve
 

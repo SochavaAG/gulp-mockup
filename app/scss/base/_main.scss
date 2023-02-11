@@ -1,0 +1,29 @@
+input,
+button,
+textarea {
+  font-family: $fontFamily, sans-serif;
+  font-size: inherit;
+}
+
+** {
+  @include x-placeholder {
+    color: $colorTextPlaceholder;
+  }
+}
+
+body {
+  line-height: 1.2;
+
+  font-family: $fontFamily, Arial, Verdana, Helvetica, sans-serif;
+  font-size: $fontSize;
+  color: $color;
+}
+
+a:not(.ag-base_btn) {
+
+  @media (any-hover: hover) {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
