@@ -4,7 +4,7 @@ const {src, dest, watch, series} = require('gulp'), // подключаем Gulp
 
   sass = require('gulp-sass')(require('sass')), // модуль для компиляции SASS (SCSS) в CSS
   csso = require('gulp-csso'), // модуль для минимизации CSS
-  classPrefix = require('gulp-class-prefix'), // модуль для добавление префиксов к классам CSS
+  //classPrefix = require('gulp-class-prefix'), // модуль для добавление префиксов к классам CSS
   mediaGroup = require('gulp-group-css-media-queries'), // модуль для группировки медиа запросов
   autoprefixer = require('gulp-autoprefixer'), // модуль для автоматической установки автопрефиксов
 
@@ -89,7 +89,7 @@ function styles () {
     .pipe(plumber())
     .pipe(sass())
     .pipe(mediaGroup())
-    .pipe(classPrefix('ag-', { ignored: [/\.ag-/, /\.js-ag-/] }))
+    //.pipe(classPrefix('ag-', { ignored: [/\.ag-/, /\.js-ag-/] }))
     .pipe(autoprefixer({
       //grid: true,
       overrideBrowserslist: ['last 5 versions'],
@@ -309,3 +309,4 @@ exports.svg = series(clear, spriteSVG); // задача для генераци�
 exports.favicon = series(clear, series(faviconsImg, faviconsImgBig)); // задача для генерации favicon // gulp favicon
 exports.build = series(clear, styles, templates, scripts, images, webpImg, fonts, faviconsImg, faviconsImgBig); // Задача для единоразовой сборки проекта // gulp build
 exports.serve = series(clear, styles, templates, scripts, images, webpImg, fonts, faviconsImg, faviconsImgBig, serve); // Задача с постоянным слежением за изменениями в проекте // gulp serve
+exports.fast = series(clear, styles, templates, scripts, serve); // Задача с постоянным слежением за изменениями в проекте без лишнего для скорости // gulp fast

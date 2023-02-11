@@ -15,13 +15,66 @@
   @@include('pages/common/header/header.html')
 
   <div class="ag-format-container">
-    <h1>Title Home Page</h1>
+    <h1 class="ag-title">Title Home Page</h1>
 
-    @@include('components/button/button.html', {
-      'textbtn': 'Join Now',
-      'urlbtn': '/en',
-      'css-class-btn': 'btn__ rer uyiyu'
-    })
+    <div class="ag-block">
+      @@include('components/button/button.html', {
+        'nameblock': 'filter',
+        'textbtn': 'Join Now',
+        'urlbtn': '/en'
+      })
+    </div>
+
+    <div class="ag-block">
+      @@include('components/check-radio/check-radio.html', {
+      'nameblock': 'filter',
+
+      'num': '1',
+      'checked': true,
+      'type': 'checkbox',
+      'name': 'type-check-hair',
+      'text': 'European 18'
+      })
+      @@include('components/check-radio/check-radio.html', {
+      'nameblock': 'filter',
+
+      'num': '2',
+      'checked': false,
+      'type': 'checkbox',
+      'name': 'type-check-hair',
+      'text': 'European 20'
+      })
+      @@include('components/check-radio/check-radio.html', {
+      'nameblock': 'filter',
+
+      'num': '3',
+      'checked': false,
+      'type': 'checkbox',
+      'name': 'type-check-hair',
+      'text': 'European 30'
+      })
+    </div>
+
+    <div class="ag-block">
+      @@include('components/check-radio/check-radio.html', {
+      'nameblock': 'filter',
+
+      'num': '1',
+      'checked': true,
+      'type': 'radio',
+      'name': 'type-radio-language',
+      'text': 'English'
+      })
+      @@include('components/check-radio/check-radio.html', {
+      'nameblock': 'filter',
+
+      'num': '2',
+      'checked': false,
+      'type': 'radio',
+      'name': 'type-radio-language',
+      'text': 'Español'
+      })
+    </div>
   </div>
 
   @@include('pages/common/footer/footer.html')

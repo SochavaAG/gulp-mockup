@@ -26,12 +26,12 @@
   color: $color;
 }
 
-.base_btn {
+.ag-base_btn {
   display: table;
   padding: 0 15px;
 
   @include btn(#{$widthBtn}, #{$heightBtn}, #{$alignBtn}, #{$bgBtn}, #{$weightBtn}, #{$sizeBtn}, #{$colorBtn}, false);
 }
-.base_btn:hover {
+.ag-base_btn:hover {
   @include btnHover(#{$bgBtnHover}, #{$colorBtnHover});
 }

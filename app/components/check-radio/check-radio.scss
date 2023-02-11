@@ -1,0 +1,58 @@
+@mixin check-radio($nameblock, $type) {
+  .ag-#{$nameblock}_#{$type} {
+    display: none;
+
+    &-wrap {
+      margin: 0 0 15px;
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+
+    &-label {
+      display: inline-block;
+      padding-left: 30px;
+
+      cursor: pointer;
+
+      font-size: 16px;
+      color: #000;
+
+      position: relative;
+
+      &::before {
+        content: "";
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #FFF;
+        background-color: #1A1B1B;
+
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+
+    &:checked + &-label::after {
+      content: "";
+      display: inline-block;
+      height: 8px;
+      width: 8px;
+      background-color: #E4285B;
+
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+
+      position: absolute;
+      top: 6px;
+      left: 6px;
+    }
+  }
+}
