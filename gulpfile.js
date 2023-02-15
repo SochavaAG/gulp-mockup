@@ -92,7 +92,16 @@ function styles () {
     //.pipe(classPrefix('ag-', { ignored: [/\.ag-/, /\.js-ag-/] }))
     .pipe(autoprefixer({
       //grid: true,
-      overrideBrowserslist: ['last 5 versions'],
+      overrideBrowserslist: ['last 8 versions'],
+      browsers: [
+        'Android >= 4',
+        'Chrome >= 20',
+        'Firefox >= 24',
+        'Explorer >= 11',
+        'iOS >= 6',
+        'Opera >= 12',
+        'Safari >= 6'
+      ],
       //cascade: true
     }))
     .pipe(csso())
@@ -120,7 +129,7 @@ function scripts() {
 
 // обработка картинок
 function images() {
-  return src(paths.app.img + '**/*.+(png|jpg|jpeg|gif|ico)') // путь с исходниками картинок
+  return src(paths.app.img + '**/*.+(png|jpg|jpeg|gif|ico|svg)') // путь с исходниками картинок
     .pipe(plumber())
     .pipe(
       imagemin([

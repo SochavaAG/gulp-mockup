@@ -1,14 +1,12 @@
-@use "sass:math";
-
-.icon {
+.svg-icons {
     display: inline-block;
-    width: 1em;
     height: 1em;
+    width: 1em;
     fill: currentColor;
 }
 
 {{#shapes}}
-.icon-{{base}} {
-    width: ({{width.inner}} / {{height.inner}}) * 1em;
+.svg-{{base}} {
+    width: calc({{width.inner}} / {{height.inner}}) * 1em;
 }
 {{/shapes}}
