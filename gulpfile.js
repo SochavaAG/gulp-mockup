@@ -53,8 +53,8 @@ const paths = {
   },
   app: {
     root: 'app/',
-    html: 'app/**.html',
-    js: 'app/js/**.js',
+    html: 'app/*.html',
+    js: 'app/js/*.js',
     css: 'app/scss/*.scss',
     img: 'app/images/',
     fonts: 'app/fonts/'
@@ -111,7 +111,7 @@ function styles () {
     .pipe(browserSync.stream());
 }
 
-// обработка картинок JS
+// обработка JS
 function scripts() {
   return src(paths.app.js)
     .pipe(plumber())
